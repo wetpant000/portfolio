@@ -1,5 +1,7 @@
 # K Vijay Kumar Swamy — Portfolio
 
+**Live:** https://portfolio-alpha-one-e211lq78oz.vercel.app
+
 A gamified developer portfolio built with **Next.js**. It opens on an animated, dithered ASCII ocean and then plays out like a retro game: character select, inventory, quest log, trophy room and a mini-game.
 
 ## Highlights
@@ -62,6 +64,7 @@ src/
 
 ## Links
 
+- Live site: https://portfolio-alpha-one-e211lq78oz.vercel.app
 - GitHub: [@wetpant000](https://github.com/wetpant000)
 - LinkedIn: [k-vijay-kumar](https://www.linkedin.com/in/k-vijay-kumar-56391b278/)
 - Blog: [kvijaykumars.blogspot.com](https://kvijaykumars.blogspot.com/)
