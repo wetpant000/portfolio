@@ -18,9 +18,28 @@ const pixel = Press_Start_2P({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://kvijaykumar.vercel.app";
+const TITLE = "K Vijay Kumar Swamy — Portfolio";
+const DESCRIPTION =
+  "Data Science undergrad and software developer. A portfolio you play: ASCII ocean, skill inventory, quest log, bookshelf and a bug-squashing mini-game.";
+
 export const metadata: Metadata = {
-  title: "K Vijay Kumar Swamy — Portfolio",
-  description: "Data Science undergrad and software developer building ML & AI projects.",
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "K Vijay Kumar Swamy",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
 };
 
 export default function RootLayout({
