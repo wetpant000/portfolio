@@ -1,26 +1,313 @@
 @import "tailwindcss";
 
+/* Dark (default) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #07090b;
+  --foreground: #e6edf3;
+  --muted: #8b949e;
+  --accent: #5eead4;
+  --gold: #fbbf24;
+  --rose: #fb7185;
+  --sky: #60a5fa;
+  --panel: #0e1418;
+  --line: #2f3d48;
+  --wood: #7c4a22;
+  --wood-dark: #4a2a12;
+  --shadow-c: color-mix(in srgb, var(--accent) 35%, transparent);
+  --sea-gradient: linear-gradient(to bottom, #ccfbf1 0%, #5eead4 35%, #14b8a6 70%, #c8b38a 100%);
+  color-scheme: dark;
+}
+
+/* Light */
+:root[data-theme="light"] {
+  --background: #f4f1ea;
+  --foreground: #14181c;
+  --muted: #5b6470;
+  --accent: #0f766e;
+  --gold: #b45309;
+  --rose: #e11d48;
+  --sky: #1d4ed8;
+  --panel: #fffdf8;
+  --line: #1f2937;
+  --wood: #a0642e;
+  --wood-dark: #6b3f1b;
+  --shadow-c: color-mix(in srgb, var(--accent) 30%, transparent);
+  --sea-gradient: linear-gradient(to bottom, #0e7490 0%, #0f766e 40%, #134e4a 75%, #8a6a32 100%);
+  color-scheme: light;
+}
+
+/* No-JS fallback: follow the system setting. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --background: #f4f1ea;
+    --foreground: #14181c;
+    --muted: #5b6470;
+    --accent: #0f766e;
+    --gold: #b45309;
+    --rose: #e11d48;
+    --sky: #1d4ed8;
+    --panel: #fffdf8;
+    --line: #1f2937;
+    --sea-gradient: linear-gradient(to bottom, #0e7490 0%, #0f766e 40%, #134e4a 75%, #8a6a32 100%);
+    color-scheme: light;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-gold: var(--gold);
+  --color-rose: var(--rose);
+  --color-sky: var(--sky);
+  --color-panel: var(--panel);
+  --color-line: var(--line);
+  --color-wood: var(--wood);
+  --color-wood-dark: var(--wood-dark);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-pixel: var(--font-press-start);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ---------- Game UI ---------- */
+
+/* In the components layer so Tailwind utilities (mt-auto, etc.) can override. */
+@layer components {
+/* Chunky pixel border with notched corners. */
+.pixel-box {
+  position: relative;
+  margin: 4px;
+  background: var(--panel);
+  box-shadow:
+    0 -4px 0 0 var(--line),
+    0 4px 0 0 var(--line),
+    -4px 0 0 0 var(--line),
+    4px 0 0 0 var(--line);
+}
+.pixel-box.lift {
+  transition: transform 0.15s steps(3), box-shadow 0.15s steps(3);
+}
+.pixel-box.lift:hover {
+  transform: translate(-4px, -4px);
+  box-shadow:
+    0 -4px 0 0 var(--accent),
+    0 4px 0 0 var(--accent),
+    -4px 0 0 0 var(--accent),
+    4px 0 0 0 var(--accent),
+    10px 12px 0 0 var(--shadow-c);
+}
+
+.pixel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 3px;
+  padding: 0.85rem 1.1rem;
+  font-family: var(--font-press-start), monospace;
+  font-size: 10px;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--background);
+  background: var(--accent);
+  box-shadow:
+    0 -3px 0 0 var(--line),
+    0 3px 0 0 var(--line),
+    -3px 0 0 0 var(--line),
+    3px 0 0 0 var(--line),
+    inset -3px -4px 0 0 rgb(0 0 0 / 0.25);
+  cursor: pointer;
+  transition: transform 0.08s steps(2), filter 0.15s;
+}
+.pixel-btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+}
+.pixel-btn:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 -3px 0 0 var(--line),
+    0 3px 0 0 var(--line),
+    -3px 0 0 0 var(--line),
+    3px 0 0 0 var(--line),
+    inset 3px 4px 0 0 rgb(0 0 0 / 0.25);
+}
+
+/* Segmented XP / stat bars. */
+.xp-track {
+  position: relative;
+  height: 14px;
+  margin: 2px;
+  background: color-mix(in srgb, var(--foreground) 8%, transparent);
+  box-shadow:
+    0 -2px 0 0 var(--line),
+    0 2px 0 0 var(--line),
+    -2px 0 0 0 var(--line),
+    2px 0 0 0 var(--line);
+}
+.xp-track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(90deg, transparent 0 10px, var(--panel) 10px 12px);
+}
+.xp-fill {
+  height: 100%;
+  width: 0;
+  background: var(--fill, var(--gold));
+  transition: width 1.4s steps(14);
+}
+[data-shown="true"] .xp-fill {
+  width: var(--w);
+}
+.xp-live {
+  height: 100%;
+  background: var(--accent);
+}
+
+/* Stepped, retro scroll-in. */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.5s steps(5), transform 0.5s steps(5);
+}
+.reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+} /* end @layer components */
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.blink {
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.pop-in {
+  animation: pop-in 0.3s steps(4) both;
+}
+
+@keyframes toast-in {
+  from {
+    transform: translateY(140%);
+  }
+  to {
+    transform: none;
+  }
+}
+.toast-in {
+  animation: toast-in 0.4s steps(5) both;
+}
+
+
+/* ---------- Bookshelf ---------- */
+@keyframes book-drop {
+  0% { opacity: 0; transform: translateY(-140%) rotate(-6deg); }
+  60% { opacity: 1; transform: translateY(6%) rotate(1deg); }
+  80% { transform: translateY(-3%); }
+  100% { opacity: 1; transform: none; }
+}
+.book-drop {
+  animation: book-drop 0.7s cubic-bezier(0.3, 0.7, 0.4, 1) both;
+}
+.book-spine {
+  box-shadow: inset -6px 0 0 rgb(0 0 0 / 0.22), inset 3px 0 0 rgb(255 255 255 / 0.12);
+  transform-origin: bottom center;
+  transition: translate 0.2s ease, rotate 0.2s ease;
+}
+.book-spine:hover,
+.book-spine:focus-visible {
+  translate: 0 -16px;
+  rotate: -3deg;
+}
+/* The open book: two pages swing open from the spine. */
+@keyframes page-left {
+  from { transform: rotateY(80deg); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes page-right {
+  from { transform: rotateY(-80deg); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+.page-left {
+  transform-origin: right center;
+  animation: page-left 0.55s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+.page-right {
+  transform-origin: left center;
+  animation: page-right 0.55s 0.12s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+@media (max-width: 767px) {
+  .page-left { transform-origin: center bottom; }
+  .page-right { transform-origin: center top; }
+}
+
+/* ---------- Bug Hunt ---------- */
+@keyframes score-pop {
+  from { opacity: 1; transform: translate(-50%, 0); }
+  to { opacity: 0; transform: translate(-50%, -40px); }
+}
+.score-pop { animation: score-pop 0.8s steps(8) both; }
+@keyframes splat {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(0.4); }
+  20% { transform: translate(-50%, -50%) scale(1.15); }
+  to { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+.splat { animation: splat 1.4s steps(10) both; }
+@keyframes shout {
+  0% { opacity: 0; transform: scale(0.5); }
+  15% { opacity: 1; transform: scale(1.15); }
+  25% { transform: scale(1); }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.shout { animation: shout 1.4s steps(14) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .xp-fill {
+    transition: none;
+  }
+  .blink,
+  .pop-in,
+  .toast-in,
+  .book-drop,
+  .page-left,
+  .page-right {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
 }
