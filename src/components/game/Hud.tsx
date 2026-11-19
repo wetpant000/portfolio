@@ -50,6 +50,9 @@ export default function Hud() {
             LV {Math.max(1, active + 1)}
             <span className="hidden text-muted sm:inline"> · {STAGES[Math.max(0, active)].label}</span>
           </span>
+          <span className="hidden shrink-0 font-pixel text-[8px] text-sky md:inline" title="Depth">
+            ▼ {STAGES[Math.max(0, active)].depth}
+          </span>
           <div className="flex min-w-0 flex-1 items-center gap-2">
             <span className="hidden font-pixel text-[8px] text-muted sm:inline">XP</span>
             <div className="xp-track flex-1 !h-[10px]">

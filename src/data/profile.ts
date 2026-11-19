@@ -39,8 +39,13 @@ export const skills: { group: string; items: string[] }[] = [
   },
 ];
 
+export type ProjectMedia =
+  | { type: "video"; src: string; poster: string; caption: string }
+  | { type: "image"; src: string; caption: string; fit?: "cover" | "contain" };
+
 export type Project = {
   name: string;
+  media: ProjectMedia[];
   status: "complete" | "in-progress";
   subtitle: string;
   repo: string;
@@ -52,6 +57,14 @@ export type Project = {
 export const projects: Project[] = [
   {
     name: "Blu Visual Teacher",
+    media: [
+      { type: "video", src: "/projects/blu/demo.mp4", poster: "/projects/blu/demo-poster.webp", caption: "A generated lesson: \"How an Engine Works\", narrated with captions" },
+      { type: "image", src: "/projects/blu/home.webp", caption: "Type a concept or drop a PDF, pick a language" },
+      { type: "image", src: "/projects/blu/lesson-flow.webp", caption: "Animated scenes planned by a local LLM" },
+      { type: "image", src: "/projects/blu/lesson-cpu.webp", caption: "Step-by-step diagrams with a presenter" },
+      { type: "image", src: "/projects/blu/flashcards.webp", caption: "Exam mode: flashcards from your PDF" },
+      { type: "image", src: "/projects/blu/listen.webp", caption: "Listen mode: an audiobook of the whole document" },
+    ],
     status: "complete",
     subtitle: "Offline video generation",
     repo: "https://github.com/wetpant000/blu-visual-teacher",
@@ -66,6 +79,11 @@ export const projects: Project[] = [
   },
   {
     name: "Campus Saathi",
+    media: [
+      { type: "image", src: "/projects/campus/landing.webp", caption: "The Campus Saathi landing page" },
+      { type: "image", src: "/projects/campus/answers.webp", caption: "Grounded answers, polite refusals" },
+      { type: "image", src: "/projects/campus/kiosk.webp", caption: "Web kiosk: ask by voice or text" },
+    ],
     status: "complete",
     subtitle: "Voice campus assistant",
     repo: "https://github.com/wetpant000/campus-shaathi",
@@ -80,6 +98,9 @@ export const projects: Project[] = [
   },
   {
     name: "GrowthLens",
+    media: [
+      { type: "image", src: "/projects/growthlens/price-chart.webp", caption: "Early prototype: price with 20/50-day moving averages", fit: "contain" },
+    ],
     status: "in-progress", // resume: "Building a platform…"
     subtitle: "Stock insight & prediction",
     repo: "https://github.com/wetpant000/growthlens",
@@ -94,6 +115,7 @@ export const projects: Project[] = [
   },
   {
     name: "asci",
+    media: [{ type: "image", src: "/projects/asci/demo.gif", caption: "Type a word, get an ASCII picture", fit: "contain" }],
     status: "complete",
     subtitle: "Words → ASCII pictures",
     repo: "https://github.com/wetpant000/asci",
@@ -118,10 +140,10 @@ export const education = [
 ];
 
 export const achievements = [
-  { icon: "🏆", tier: "legendary", title: "Champion", desc: "Won a hackathon" },
-  { icon: "⚔️", tier: "epic", title: "Veteran", desc: "Participated in 8 hackathons" },
-  { icon: "🧠", tier: "rare", title: "Problem Solver", desc: "" },
-  { icon: "🌱", tier: "rare", title: "Open Sourcerer", desc: "Active open-source contributor" },
+  { sprite: "trophy", tier: "legendary", title: "Champion", desc: "Won a hackathon" },
+  { sprite: "shield", tier: "epic", title: "Veteran", desc: "Participated in 8 hackathons" },
+  { sprite: "bulb", tier: "rare", title: "Problem Solver", desc: "" },
+  { sprite: "branch", tier: "rare", title: "Open Sourcerer", desc: "Active open-source contributor" },
 ] as const;
 
 // Headline numbers for the character sheet (all from the resume / GitHub).
@@ -160,12 +182,12 @@ export function yearOfStudy(now = Date.now()) {
 
 // Page sections, used by the hero nav and the sticky HUD.
 export const STAGES = [
-  { id: "about", label: "Player" },
-  { id: "skills", label: "Skills" },
-  { id: "work", label: "Quests" },
-  { id: "trophies", label: "Trophies" },
-  { id: "library", label: "Library" },
-  { id: "blog", label: "Blog" },
-  { id: "arcade", label: "Arcade" },
-  { id: "contact", label: "Party" },
+  { id: "about", label: "Player", depth: "10m" },
+  { id: "skills", label: "Skills", depth: "40m" },
+  { id: "work", label: "Quests", depth: "120m" },
+  { id: "trophies", label: "Trophies", depth: "300m" },
+  { id: "library", label: "Library", depth: "600m" },
+  { id: "blog", label: "Blog", depth: "1000m" },
+  { id: "arcade", label: "Arcade", depth: "3000m" },
+  { id: "contact", label: "Party", depth: "4000m" },
 ];

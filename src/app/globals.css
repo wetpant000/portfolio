@@ -11,6 +11,7 @@
   --sky: #60a5fa;
   --panel: #0e1418;
   --line: #2f3d48;
+  --depth-tint: #000208;
   --wood: #7c4a22;
   --wood-dark: #4a2a12;
   --shadow-c: color-mix(in srgb, var(--accent) 35%, transparent);
@@ -29,6 +30,7 @@
   --sky: #1d4ed8;
   --panel: #fffdf8;
   --line: #1f2937;
+  --depth-tint: #0f766e;
   --wood: #a0642e;
   --wood-dark: #6b3f1b;
   --shadow-c: color-mix(in srgb, var(--accent) 30%, transparent);
@@ -65,7 +67,7 @@
   --color-line: var(--line);
   --color-wood: var(--wood);
   --color-wood-dark: var(--wood-dark);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-pixel-body);
   --font-mono: var(--font-geist-mono);
   --font-pixel: var(--font-press-start);
 }
@@ -77,7 +79,9 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-pixel-body), system-ui, sans-serif;
+  font-size: 17px;
+  letter-spacing: 0.01em;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -289,6 +293,48 @@ body {
 }
 .shout { animation: shout 1.4s steps(14) both; }
 
+
+/* ---------- Ambient section backdrops ---------- */
+.ascii-backdrop {
+  opacity: 0.7;
+  /* Fainter in the middle where the content sits, stronger at the edges. */
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 48%, rgb(0 0 0 / 0.3), #000 88%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 48%, rgb(0 0 0 / 0.3), #000 88%);
+}
+:root[data-theme="light"] .ascii-backdrop {
+  opacity: 0.55;
+}
+
+/* ---------- Level select: CRT screen ---------- */
+.crt-overlay {
+  background:
+    repeating-linear-gradient(0deg, rgb(0 0 0 / 0.22) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.55) 100%);
+  mix-blend-mode: multiply;
+}
+@keyframes crt-on {
+  0% { transform: scale(1, 0.01); filter: brightness(4); opacity: 0.6; }
+  35% { transform: scale(1, 0.01); filter: brightness(4); opacity: 1; }
+  65% { transform: scale(1, 1.04); filter: brightness(1.8); }
+  100% { transform: none; filter: none; }
+}
+.crt-on { animation: crt-on 0.45s steps(9) both; }
+
+/* ---------- Trophy room ---------- */
+@keyframes trophy-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.trophy-bob { animation: trophy-bob 2.4s steps(6) infinite; }
+.trophy-card:hover .trophy-bob { animation-duration: 0.8s; }
+.trophy-glow { opacity: 0.7; transition: opacity 0.2s; }
+.trophy-card:hover .trophy-glow { opacity: 1; }
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+.sparkle { animation: sparkle 1.6s steps(4) infinite; }
+
 @media (prefers-reduced-motion: reduce) {
   .reveal,
   .reveal[data-shown="true"] {
@@ -304,7 +350,10 @@ body {
   .toast-in,
   .book-drop,
   .page-left,
-  .page-right {
+  .page-right,
+  .crt-on,
+  .trophy-bob,
+  .sparkle {
     animation: none;
   }
   html {

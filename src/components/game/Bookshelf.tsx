@@ -185,40 +185,38 @@ export default function Bookshelf({ books, profileUrl }: { books: Book[]; profil
               <h3 className="text-2xl leading-tight font-semibold">{open.title}</h3>
               <p className="mt-1 text-muted">by {open.author}</p>
 
-              <dl className="mt-5 grid grid-cols-2 gap-3 text-sm">
-                {open.pages && (
-                  <div className="border-2 border-line px-3 py-2">
-                    <dt className="font-pixel text-[7px] text-muted">PAGES</dt>
-                    <dd className="mt-1">{open.pages}</dd>
-                  </div>
-                )}
-                {open.avgRating && (
-                  <div className="border-2 border-line px-3 py-2">
-                    <dt className="font-pixel text-[7px] text-muted">GOODREADS</dt>
-                    <dd className="mt-1 flex items-center gap-2 text-gold">
-                      <Stars value={open.avgRating} /> <span className="text-foreground">{open.avgRating.toFixed(2)}</span>
-                    </dd>
-                  </div>
-                )}
-                {open.myRating && (
-                  <div className="border-2 border-line px-3 py-2">
-                    <dt className="font-pixel text-[7px] text-muted">MY RATING</dt>
-                    <dd className="mt-1 text-accent">
-                      <Stars value={open.myRating} />
-                    </dd>
-                  </div>
-                )}
-                {open.published && (
-                  <div className="border-2 border-line px-3 py-2">
-                    <dt className="font-pixel text-[7px] text-muted">PUBLISHED</dt>
-                    <dd className="mt-1">{open.published}</dd>
-                  </div>
-                )}
+              {/* Same three facts for every book */}
+              <dl className="mt-5 grid grid-cols-3 gap-3 text-sm">
+                <div className="border-2 border-line px-3 py-2">
+                  <dt className="font-pixel text-[7px] text-muted">STATUS</dt>
+                  <dd className={`mt-1 ${open.status === "reading" ? "text-rose" : "text-gold"}`}>
+                    {open.status === "reading" ? "Reading" : "Finished"}
+                  </dd>
+                </div>
+                <div className="border-2 border-line px-3 py-2">
+                  <dt className="font-pixel text-[7px] text-muted">PUBLISHED</dt>
+                  <dd className="mt-1">{open.published ?? "—"}</dd>
+                </div>
+                <div className="border-2 border-line px-3 py-2">
+                  <dt className="font-pixel text-[7px] text-muted">MY RATING</dt>
+                  <dd className="mt-1 text-accent">{open.myRating ? <Stars value={open.myRating} /> : <span className="text-muted">Not rated</span>}</dd>
+                </div>
               </dl>
 
-              {open.description && (
-                <p className="mt-6 text-sm leading-relaxed whitespace-pre-line text-foreground/85">{open.description}</p>
+              {open.genres && open.genres.length > 0 && (
+                <ul className="mt-4 flex flex-wrap gap-2">
+                  {open.genres.map((g) => (
+                    <li key={g} className="border-2 border-line bg-accent/10 px-2 py-0.5 text-sm text-accent">
+                      {g}
+                    </li>
+                  ))}
+                </ul>
               )}
+
+              <p className="mt-6 mb-2 font-pixel text-[7px] text-gold">ABOUT THE BOOK</p>
+              <p className="text-[15px] leading-relaxed whitespace-pre-line text-foreground/85">
+                {open.description ?? "No blurb for this one yet. Open it on Goodreads to read more."}
+              </p>
 
               <a href={open.url} target="_blank" rel="noreferrer" className="pixel-btn mt-7 self-start">
                 View on Goodreads <ExternalLink className="h-3.5 w-3.5" />

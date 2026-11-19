@@ -1,4 +1,5 @@
 import AsciiFish from "@/components/AsciiFish";
+import Dive from "@/components/Dive";
 import ThemeToggle from "@/components/ThemeToggle";
 import Hud from "@/components/game/Hud";
 import Reveal from "@/components/game/Reveal";
@@ -66,8 +67,8 @@ export default function Home() {
                   <span className="border-2 border-line px-2 py-2.5">
                     LV <span className="text-gold">{yearOfStudy()}</span>
                   </span>
-                  <span className="border-2 border-line px-2 py-2.5">
-                    GUILD <span className="text-accent">VTU</span>
+                  <span className="border-2 border-line px-2 py-2.5 text-accent">
+                    <span className="blink">●</span> OPEN TO WORK
                   </span>
                 </div>
 
@@ -109,14 +110,31 @@ export default function Home() {
         </div>
       </section>
 
-      <Character />
-      <Skills />
-      <Quests />
-      <Trophies />
-      <Library />
-      <Blog />
-      <Arcade />
-      <Contact />
+      {/* Scrolling down is a dive: each section is a deeper ocean zone. */}
+      <Dive zone="shallows" level={1}>
+        <Character />
+      </Dive>
+      <Dive zone="kelp" level={2}>
+        <Skills />
+      </Dive>
+      <Dive zone="wreck" level={3}>
+        <Quests />
+      </Dive>
+      <Dive zone="treasure" level={4}>
+        <Trophies />
+      </Dive>
+      <Dive zone="twilight" level={5}>
+        <Library />
+      </Dive>
+      <Dive zone="midnight" level={6}>
+        <Blog />
+      </Dive>
+      <Dive zone="abyss" level={7}>
+        <Arcade />
+      </Dive>
+      <Dive zone="floor" level={8}>
+        <Contact />
+      </Dive>
 
       <AchievementToast />
     </main>

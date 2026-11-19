@@ -1,5 +1,5 @@
 import "server-only";
-import { GOODREADS_USER_ID, GOODREADS_PROFILE, myBooks } from "@/data/books";
+import { GOODREADS_USER_ID, GOODREADS_PROFILE, myBooks, bookDetails } from "@/data/books";
 
 export type Book = {
   id: string;
@@ -13,6 +13,7 @@ export type Book = {
   published?: string;
   status: "read" | "reading";
   myRating?: number;
+  genres?: string[];
 };
 
 /*
@@ -22,7 +23,8 @@ export type Book = {
  * blocked. Goodreads' official *bookshelf widgets* still publish them, so we read:
  *   1. grid_widget   → every book on "read" and "currently-reading" (title + cover)
  *   2. custom_widget → authors and your star ratings for the "read" shelf
- *   3. book pages    → description, pages, rating (best effort; skipped if Goodreads rate-limits)
+ * Blurbs, first-published year and genres come from `bookDetails` in
+ * src/data/books.ts so every book on the shelf shows the same set of details.
  * Add/finish a book on Goodreads and it shows up here within an hour.
  */
 
@@ -142,30 +144,21 @@ async function bookPage(id: string) {
   };
 }
 
-async function enrich(w: WidgetBook, status: Book["status"]): Promise<Book> {
-  const book: Book = {
+/** Turn a widget entry into a Book, adding the curated blurb from src/data/books.ts. */
+function toBook(w: WidgetBook, status: Book["status"]): Book {
+  const extra = bookDetails[norm(w.title)];
+  return {
     id: w.id ?? w.reviewUrl,
-    url: w.id ? `https://www.goodreads.com/book/show/${w.id}` : w.reviewUrl,
+    url: w.reviewUrl, // your Goodreads entry for this book (always a valid link)
     title: w.title,
-    author: w.author ?? "",
+    author: w.author || extra?.author || "",
     cover: w.cover,
     status,
     myRating: w.myRating,
+    description: extra?.blurb,
+    published: extra?.published,
+    genres: extra?.genres,
   };
-  if (!w.id) return book;
-  const page = await bookPage(w.id);
-  // Only trust the page if it is really the same book.
-  if (page && (norm(page.title).includes(norm(w.title)) || norm(w.title).includes(norm(page.title)))) {
-    book.author ||= page.author ?? "";
-    book.cover = page.cover ?? book.cover;
-    book.description = page.description;
-    book.pages = page.pages;
-    book.avgRating = page.avgRating;
-    book.published = page.published;
-  } else if (!page) {
-    book.url = w.reviewUrl; // book id unconfirmed — link to your Goodreads entry instead
-  }
-  return book;
 }
 
 /** All books for the shelf: currently reading first, then read. Never throws. */
@@ -179,10 +172,9 @@ export async function getBooks(): Promise<Book[]> {
   for (const b of read) Object.assign(b, meta.get(b.reviewUrl) ?? {});
   for (const b of reading) if (b.id && authors.has(b.id)) b.author = authors.get(b.id);
 
-  // Fetch details one at a time to stay gentle on Goodreads.
   const books: Book[] = [];
-  for (const w of reading) books.push(await enrich(w, "reading"));
-  for (const w of read) books.push(await enrich(w, "read"));
+  for (const w of reading) books.push(toBook(w, "reading"));
+  for (const w of read) books.push(toBook(w, "read"));
 
   // Manual extras from src/data/books.ts.
   for (const m of myBooks) {

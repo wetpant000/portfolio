@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Press_Start_2P } from "next/font/google";
+import { Geist_Mono, Pixelify_Sans, Press_Start_2P } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Body text: a readable pixel font so the whole site shares the arcade look.
+const pixelBody = Pixelify_Sans({
+  variable: "--font-pixel-body",
   subsets: ["latin"],
 });
 
@@ -61,7 +62,7 @@ export default function RootLayout({
           <style>{`.reveal{opacity:1!important;transform:none!important}.xp-fill{width:var(--w)!important}`}</style>
         </noscript>
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${pixel.variable} antialiased`}>
+      <body className={`${pixelBody.variable} ${geistMono.variable} ${pixel.variable} antialiased`}>
         {children}
       </body>
     </html>

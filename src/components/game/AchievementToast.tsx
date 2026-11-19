@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import PixelArt, { SPRITES, tintPalette } from "./PixelArt";
 
 /** Pops an "achievement unlocked" toast the first time the trophy room is reached. */
 export default function AchievementToast({ targetId = "trophies" }: { targetId?: string }) {
@@ -31,7 +32,9 @@ export default function AchievementToast({ targetId = "trophies" }: { targetId?:
   return (
     <div role="status" className="fixed right-4 bottom-4 z-50 sm:right-6 sm:bottom-6">
       <div className="toast-in pixel-box flex items-center gap-4 px-4 py-3 pr-6">
-        <span className="flex h-11 w-11 items-center justify-center bg-gold/15 text-2xl">🏆</span>
+        <span className="flex h-11 w-11 items-center justify-center bg-gold/15 p-1.5">
+          <PixelArt rows={SPRITES.trophy} palette={tintPalette("var(--gold)")} className="h-full w-full" />
+        </span>
         <div>
           <p className="font-pixel text-[8px] text-gold">ACHIEVEMENT UNLOCKED</p>
           <p className="mt-1.5 text-sm font-semibold">Explorer</p>
