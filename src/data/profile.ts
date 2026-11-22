@@ -140,7 +140,7 @@ export const education = [
 ];
 
 export const achievements = [
-  { sprite: "trophy", tier: "legendary", title: "Champion", desc: "Won a hackathon" },
+  { sprite: "trophy", tier: "legendary", title: "Champion", desc: "Won 2 hackathons" },
   { sprite: "shield", tier: "epic", title: "Veteran", desc: "Participated in 8 hackathons" },
   { sprite: "bulb", tier: "rare", title: "Problem Solver", desc: "" },
   { sprite: "branch", tier: "rare", title: "Open Sourcerer", desc: "Active open-source contributor" },
@@ -150,7 +150,7 @@ export const achievements = [
 export const stats = [
   { value: "8.1", label: "CGPA" },
   { value: "8", label: "Hackathons" },
-  { value: "1", label: "Hackathon win" },
+  { value: "2", label: "Hackathon wins" },
   { value: "4", label: "Public repos" },
   { value: "3", label: "Prog. languages" },
   { value: "3", label: "Main quests" },
