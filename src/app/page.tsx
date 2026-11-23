@@ -13,7 +13,7 @@ import Contact from "@/components/sections/Contact";
 import Library from "@/components/sections/Library";
 import Arcade from "@/components/sections/Arcade";
 import Blog from "@/components/sections/Blog";
-import { MapPin } from "lucide-react";
+import { FileText, MapPin } from "lucide-react";
 import MobileMenu from "@/components/game/MobileMenu";
 import { profile, degreeProgress, yearOfStudy, STAGES } from "@/data/profile";
 
@@ -101,9 +101,20 @@ export default function Home() {
                   ))}
                 </ul>
 
-                <a href="#about" className="pixel-btn mt-6">
-                  <span className="blink">▶</span> Press Start
-                </a>
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                  <a href="#about" className="pixel-btn">
+                    <span className="blink">▶</span> Press Start
+                  </a>
+                  <a
+                    href="/K-Vijay-Kumar-Swamy-Resume.pdf"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="pixel-btn pixel-btn-alt"
+                    aria-label="Open resume (PDF)"
+                  >
+                    <FileText aria-hidden className="h-3.5 w-3.5" /> Resume
+                  </a>
+                </div>
               </div>
             </Reveal>
           </div>

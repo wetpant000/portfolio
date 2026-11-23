@@ -134,6 +134,11 @@ body {
   cursor: pointer;
   transition: transform 0.08s steps(2), filter 0.15s;
 }
+/* Secondary button: panel colours instead of the accent fill. */
+.pixel-btn-alt {
+  color: var(--foreground);
+  background: var(--panel);
+}
 .pixel-btn:hover {
   filter: brightness(1.08);
   transform: translateY(-2px);
